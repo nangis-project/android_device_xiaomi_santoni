@@ -1,4 +1,6 @@
-# Copyright (c) 2009-2012, 2014-2017, The Linux Foundation. All rights reserved.
+#! /system/bin/sh
+
+# Copyright (c) 2009-2020, The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -25,17 +27,13 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-service baseband-sh /vendor/bin/init.baseband.sh
-    class late_start
-    user root
-    oneshot
+fpdb=/data/system/users/0/settings_fingerprint.xml
 
-service goodix_script /vendor/bin/init.goodix.sh
-    class late_start
-    user root
-    oneshot
-
-service goodix_script2 /vendor/bin/init2.goodix.sh
-    class late_start
-    user system
-    oneshot
+while [ 1 != "$(getprop sys.boot_completed)" ]; do
+sleep 2s
+done
+if [ 1 == "$(getprop persist.sys.fp.goodix)" ]; then
+   if [ ! -z "$(grep "fingerId" $fpdb)" ]; then
+      am start -n com.android.settings/.Settings\$FingerprintSettingsActivity
+   fi
+fi

@@ -37,6 +37,7 @@ PRODUCT_PACKAGES += \
 # Init scripts
 PRODUCT_PACKAGES += \
     init.device.rc \
+    init2.goodix.sh \
     init.baseband.sh
 
 # Keylayouts
